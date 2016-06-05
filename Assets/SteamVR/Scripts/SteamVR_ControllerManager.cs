@@ -12,6 +12,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
 {
 	public GameObject left, right;
 	public GameObject[] objects; // populate with objects you want to assign to additional controllers
+    public GameObject boat;
 
 	uint[] indices; // assigned
 	bool[] connected = new bool[OpenVR.k_unMaxTrackedDeviceCount]; // controllers only
@@ -233,5 +234,62 @@ public class SteamVR_ControllerManager : MonoBehaviour
 			SetTrackedDeviceIndex(objectIndex++, OpenVR.k_unTrackedDeviceIndexInvalid);
 		}
 	}
+
+    EVRButtonId[] buttonIds = new EVRButtonId[] {
+        EVRButtonId.k_EButton_ApplicationMenu,
+        EVRButtonId.k_EButton_Grip,
+        EVRButtonId.k_EButton_SteamVR_Touchpad,
+        EVRButtonId.k_EButton_SteamVR_Trigger
+    };
+
+    EVRButtonId[] axisIds = new EVRButtonId[] {
+        EVRButtonId.k_EButton_SteamVR_Touchpad,
+        EVRButtonId.k_EButton_SteamVR_Trigger
+    };
+
+    void Update()
+    {
+        for (var index = 0; index < connected.Length; index++)
+        {
+            if (connected[index] == true)
+            {
+                foreach (var buttonId in buttonIds)
+                {
+                    if (SteamVR_Controller.Input(index).GetPressDown(buttonId))
+                    {
+                        Debug.Log(buttonId + " press down");
+                        if (buttonId == buttonIds[3])
+                        {
+                            //var moveController = boat.GetComponent<MoveController>();
+                            //SteamVR_Controller.Input(index).
+                        }
+                    }
+                    if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
+                    {
+                        Debug.Log(buttonId + " press up");
+                        if (buttonId == EVRButtonId.k_EButton_SteamVR_Trigger)
+                        {
+                            SteamVR_Controller.Input(index).TriggerHapticPulse();
+                        }
+                    }
+                    if (SteamVR_Controller.Input(index).GetPress(buttonId))
+                        Debug.Log(buttonId);
+                }
+
+                foreach (var buttonId in axisIds)
+                {
+                    if (SteamVR_Controller.Input(index).GetTouchDown(buttonId))
+                        Debug.Log(buttonId + " touch down");
+                    if (SteamVR_Controller.Input(index).GetTouchUp(buttonId))
+                        Debug.Log(buttonId + " touch up");
+                    if (SteamVR_Controller.Input(index).GetTouch(buttonId))
+                    {
+                        var axis = SteamVR_Controller.Input(index).GetAxis(buttonId);
+                        Debug.Log("axis: " + axis);
+                    }
+                }
+            }
+        }
+    }
 }
 
