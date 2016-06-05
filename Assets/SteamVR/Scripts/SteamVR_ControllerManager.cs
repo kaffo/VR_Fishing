@@ -249,7 +249,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
 
     void Update()
     {
-        for (var index = 0; index < connected.Length; index++)
+       /* for (var index = 0; index < connected.Length; index++)
         {
             if (connected[index] == true)
             {
@@ -289,7 +289,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     }
                 }
             }
-        }
+        }*/
     }
 }
 
