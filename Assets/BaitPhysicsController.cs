@@ -17,7 +17,26 @@ public class BaitPhysicsController : MonoBehaviour {
         Debug.Log(transform.localPosition);
         if (this.transform.localPosition.magnitude > 75)
         {
-            rb.velocity.Scale(new Vector3(-1.0f, -1.0f, -1.0f));
+            
         }
 	}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Fish"))
+        {
+            other.gameObject.transform.SetParent(this.transform);
+            other.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
+            other.gameObject.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
+        }
+        if (other.gameObject.CompareTag("Bucket"))
+        {
+            if (this.transform.childCount > 0)
+            {
+                for (var i = 0; i < this.transform.childCount; i++)
+                {
+                    this.transform.GetChild(i).transform.SetParent(other.transform);
+                }
+            }
+        }
+    }
 }
