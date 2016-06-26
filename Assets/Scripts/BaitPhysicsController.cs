@@ -13,11 +13,13 @@ public class BaitPhysicsController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        Debug.Log(rb.velocity);
-        Debug.Log(transform.localPosition);
-        if (this.transform.localPosition.magnitude > 75)
+        if (this.transform.position.y < 0)
         {
-            
+            rb.drag = 40;
+        }
+        else
+        {
+            rb.drag = 1;
         }
 	}
     void OnTriggerEnter(Collider other)

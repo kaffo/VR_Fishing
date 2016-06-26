@@ -12,9 +12,17 @@ public class SteamVR_ControllerManager : MonoBehaviour
 {
 	public GameObject left, right;
 	public GameObject[] objects; // populate with objects you want to assign to additional controllers
-    public GameObject boat;
+    public GameObject rod;
+    public GameObject hook;
+    public float reelSpeed = 0.04f;
+    public float minReelLength = 0.7f;
 
-	uint[] indices; // assigned
+    private SpringJoint rodJoint;
+
+    private Transform rodTransform;
+    private Transform hookTransform;
+
+    uint[] indices; // assigned
 	bool[] connected = new bool[OpenVR.k_unMaxTrackedDeviceCount]; // controllers only
 
 	// cached roles - may or may not be connected
@@ -59,7 +67,14 @@ public class SteamVR_ControllerManager : MonoBehaviour
 		SteamVR_Utils.Event.Listen("TrackedDeviceRoleChanged", OnTrackedDeviceRoleChanged);
 	}
 
-	void OnDisable()
+    void Start()
+    {
+        rodJoint = rod.GetComponent<SpringJoint>();
+        rodTransform = rod.GetComponent<Transform>();
+        hookTransform = hook.GetComponent<Transform>();
+    }
+
+        void OnDisable()
 	{
 		SteamVR_Utils.Event.Remove("input_focus", OnInputFocus);
 		SteamVR_Utils.Event.Remove("device_connected", OnDeviceConnected);
@@ -247,9 +262,11 @@ public class SteamVR_ControllerManager : MonoBehaviour
         EVRButtonId.k_EButton_SteamVR_Trigger
     };
 
+    //3 is right 4 is left
+
     void Update()
     {
-       /* for (var index = 0; index < connected.Length; index++)
+        for (var index = 0; index < connected.Length; index++)
         {
             if (connected[index] == true)
             {
@@ -258,11 +275,17 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     if (SteamVR_Controller.Input(index).GetPressDown(buttonId))
                     {
                         Debug.Log(buttonId + " press down");
-                        if (buttonId == buttonIds[3])
+                        if (buttonId == buttonIds[1] && index == 3)
                         {
-                            //var moveController = boat.GetComponent<MoveController>();
-                            //SteamVR_Controller.Input(index).
-                        }
+                            if (rodJoint.maxDistance == 300)
+                            {
+                                rodJoint.maxDistance = Vector3.Distance(rodTransform.position, hookTransform.position);
+                            }
+                            else
+                            {
+                                rodJoint.maxDistance = 300f;
+                            }
+                        }                     
                     }
                     if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
                     {
@@ -272,24 +295,29 @@ public class SteamVR_ControllerManager : MonoBehaviour
                             SteamVR_Controller.Input(index).TriggerHapticPulse();
                         }
                     }
+                    //For holds
                     if (SteamVR_Controller.Input(index).GetPress(buttonId))
-                        Debug.Log(buttonId);
+                        if (buttonId == buttonIds[1] && index == 4 && rodJoint.maxDistance > minReelLength)
+                        {   
+                            rodJoint.maxDistance -= reelSpeed;
+                            SteamVR_Controller.Input(3).TriggerHapticPulse(1000);
+                        }
                 }
 
                 foreach (var buttonId in axisIds)
                 {
                     if (SteamVR_Controller.Input(index).GetTouchDown(buttonId))
-                        Debug.Log(buttonId + " touch down");
+                        //Debug.Log(buttonId + " touch down");
                     if (SteamVR_Controller.Input(index).GetTouchUp(buttonId))
-                        Debug.Log(buttonId + " touch up");
+                        //Debug.Log(buttonId + " touch up");
                     if (SteamVR_Controller.Input(index).GetTouch(buttonId))
                     {
-                        var axis = SteamVR_Controller.Input(index).GetAxis(buttonId);
-                        Debug.Log("axis: " + axis);
+                        //var axis = SteamVR_Controller.Input(index).GetAxis(buttonId);
+                        //Debug.Log("axis: " + axis);
                     }
                 }
             }
-        }*/
+        }
     }
 }
 
