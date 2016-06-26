@@ -21,7 +21,7 @@ public class ResizeBoat : MonoBehaviour {
             else
                 Debug.Log("Error loading Chaperone");
             Debug.Log("X:" + playAreaX.ToString() + " Y:" + playAreaY.ToString());
-            boatTransform.localScale = new Vector3(playAreaX * 0.8f, 0.1f, playAreaY * 0.6f);
+            boatTransform.localScale = new Vector3(playAreaX * 0.9f, 0.1f, playAreaY * 0.9f);
         }
         else Debug.Log("Play Area not active");
     }
