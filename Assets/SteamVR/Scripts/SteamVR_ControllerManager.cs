@@ -14,10 +14,12 @@ public class SteamVR_ControllerManager : MonoBehaviour
 	public GameObject[] objects; // populate with objects you want to assign to additional controllers
     public GameObject rod;
     public GameObject hook;
+    public GameObject rodTrigger;
     public float reelSpeed = 0.04f;
     public float minReelLength = 0.7f;
 
     private SpringJoint rodJoint;
+    private bool touchingReel = false;
 
     private Transform rodTransform;
     private Transform hookTransform;
@@ -274,18 +276,24 @@ public class SteamVR_ControllerManager : MonoBehaviour
                 {
                     if (SteamVR_Controller.Input(index).GetPressDown(buttonId))
                     {
-                        Debug.Log(buttonId + " press down");
+                        //Debug.Log(buttonId + " press down");
                         if (buttonId == buttonIds[1] && index == 3)
                         {
                             if (rodJoint.maxDistance == 300)
                             {
+                                rodTrigger.SetActive(false);
                                 rodJoint.maxDistance = Vector3.Distance(rodTransform.position, hookTransform.position);
                             }
                             else
                             {
+                                rodTrigger.SetActive(true);
                                 rodJoint.maxDistance = 300f;
                             }
-                        }                     
+                        }
+                        if (buttonId == buttonIds[1] && index == 4)
+                        {
+                            
+                        }
                     }
                     if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
                     {
@@ -317,6 +325,23 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Reel"))
+        {
+            touchingReel = true;
+            Debug.Log("Collided");
+        }
+    }
+
+    void OnTriggerLeave(Collider other)
+    {
+        if (other.gameObject.CompareTag("Reel"))
+        {
+            touchingReel = false;
+            Debug.Log("Collided");
         }
     }
 }
