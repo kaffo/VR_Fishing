@@ -134,5 +134,8 @@ public class SteamVR_LaserPointer : MonoBehaviour
             pointer.transform.localScale = new Vector3(thickness, thickness, dist);
         }
         pointer.transform.localPosition = new Vector3(0f, 0f, dist/2f);
+        Vector3 pointerRot = pointer.transform.TransformDirection(0f, 0f, 0f);
+        pointer.transform.eulerAngles = new Vector3(1.0f, pointerRot.y, pointerRot.z);
+        Debug.Log(pointerRot);
     }
 }
