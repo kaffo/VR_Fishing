@@ -279,7 +279,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     {
                         Debug.Log(buttonId + " press down");
                         Debug.Log(index);
-                        if (buttonId == buttonIds[1] && index == 1)
+                        if (buttonId == buttonIds[1] && index == rightIndex)
                         {
                             if (rodJoint.maxDistance == 300)
                             {
@@ -296,7 +296,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
                     {
                         Debug.Log(buttonId + " press up");
-                        if (buttonId == EVRButtonId.k_EButton_SteamVR_Trigger)
+                        if (buttonId == EVRButtonId.k_EButton_SteamVR_Trigger && index == leftIndex)
                         {
                             Debug.Log("Stop");
                             moveReel(reelCentre.GetComponent<HingeJoint>().angle);
@@ -305,13 +305,12 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     //For holds
                     if (SteamVR_Controller.Input(index).GetPress(buttonId))
                     {
-                        Debug.Log("Left: " + leftIndex.ToString() + " Right: " + rightIndex.ToString());
-                        if (buttonId == buttonIds[1] && index == 4 && rodJoint.maxDistance > minReelLength)
+                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength)
                         {
                             rodJoint.maxDistance -= reelSpeed;
                             SteamVR_Controller.Input(3).TriggerHapticPulse(1000);
                         }
-                        if (buttonId == buttonIds[3] && index == 2 && touchingReel == true)
+                        if (buttonId == buttonIds[3] && index == leftIndex && touchingReel == true)
                         {
                             //TODO Fix this mess
                             Debug.Log(Vector3.Angle(reelCentre.transform.position, left.transform.position));
