@@ -305,6 +305,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     //For holds
                     if (SteamVR_Controller.Input(index).GetPress(buttonId))
                     {
+                        Debug.Log("Left: " + leftIndex.ToString() + " Right: " + rightIndex.ToString());
                         if (buttonId == buttonIds[1] && index == 4 && rodJoint.maxDistance > minReelLength)
                         {
                             rodJoint.maxDistance -= reelSpeed;
