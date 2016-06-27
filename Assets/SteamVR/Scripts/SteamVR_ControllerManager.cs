@@ -308,7 +308,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                         if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength)
                         {
                             rodJoint.maxDistance -= reelSpeed;
-                            SteamVR_Controller.Input(3).TriggerHapticPulse(1000);
+                            SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(1000);
                         }
                         if (buttonId == buttonIds[3] && index == leftIndex && touchingReel == true)
                         {
