@@ -2,7 +2,9 @@
 using System.Collections;
 
 public class MoveController : MonoBehaviour {
-    public float speedMod = 0.3f;
+    public GameObject cam;
+    public float speedMod = 0.1f;
+    public float camSpeedMod = 3f;
     public float maxX = 150f;
     public float maxY = 150f;
 
@@ -15,12 +17,25 @@ public class MoveController : MonoBehaviour {
 	void FixedUpdate () {
         float moveHorizontal = Input.GetAxis("Horizontal") * speedMod;
         float moveVertical = Input.GetAxis("Vertical") * speedMod;
+        float mouseScroll = Input.GetAxis("Mouse ScrollWheel") * camSpeedMod;
 
-        Vector3 boatPos = this.transform.position;
-        Vector3 newPos = new Vector3(boatPos.x + moveHorizontal, 0f, boatPos.z + moveVertical);
-        if (newPos.x < maxX && newPos.x > -maxX && newPos.z < maxY && newPos.z > -maxY)
+        if (moveHorizontal != 0 || moveVertical != 0)
         {
-            this.transform.position = newPos;
+            Vector3 boatPos = this.transform.position;
+            Vector3 newPos = new Vector3(boatPos.x + moveHorizontal, 0f, boatPos.z + moveVertical);
+            if (newPos.x < maxX && newPos.x > -maxX && newPos.z < maxY && newPos.z > -maxY)
+            {
+                this.transform.position = newPos;
+            }
+        }
+        if (mouseScroll != 0)
+        {
+            Vector3 camPos = cam.transform.position;
+            Vector3 newCamPos = new Vector3(camPos.x, camPos.y - mouseScroll, camPos.z);
+            if (newCamPos.y > 2 && newCamPos.y < 50)
+            {
+                cam.transform.position = newCamPos;
+            }
         }
     }
 }
