@@ -12,6 +12,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
 {
     public GameObject left, right;
     public GameObject[] objects; // populate with objects you want to assign to additional controllers
+    public GameObject boat;
     public GameObject rod;
     public GameObject hook;
     public GameObject rodTrigger;
@@ -22,6 +23,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
 
     private Transform rodTransform;
     private Transform hookTransform;
+    private MoveController boatMoveController;
 
     uint[] indices; // assigned
     bool[] connected = new bool[OpenVR.k_unMaxTrackedDeviceCount]; // controllers only
@@ -73,6 +75,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
         rodJoint = rod.GetComponent<SpringJoint>();
         rodTransform = rod.GetComponent<Transform>();
         hookTransform = hook.GetComponent<Transform>();
+        boatMoveController = boat.GetComponent<MoveController>();
     }
 
     void OnDisable()
@@ -288,8 +291,23 @@ public class SteamVR_ControllerManager : MonoBehaviour
                         }
                         if (buttonId == buttonIds[2] && index == rightIndex)
                         {
-                            var axis = SteamVR_Controller.Input(index).GetAxis(0);
-                            Debug.Log("Axis: " + axis);
+                            Vector2 axis = SteamVR_Controller.Input(index).GetAxis(axisIds[0]);
+                            if (axis.x < -0.5 && axis.y > -0.5 && axis.y < 0.5)
+                            {
+                                boatMoveController.moveBoat(-1, 0);
+                            }
+                            else if (axis.x > 0.5 && axis.y > -0.5 && axis.y < 0.5)
+                            {
+                                boatMoveController.moveBoat(1, 0);
+                            }
+                            else if (axis.y < -0.5 && axis.x > -0.5 && axis.x < 0.5)
+                            {
+                                boatMoveController.moveBoat(0, -1);
+                            }
+                            else if (axis.y > 0.5 && axis.x > -0.5 && axis.x < 0.5)
+                            {
+                                boatMoveController.moveBoat(0, 1);
+                            }
                         }
                     }
                     if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
