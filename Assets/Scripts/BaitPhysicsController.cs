@@ -3,8 +3,10 @@ using System.Collections;
 
 public class BaitPhysicsController : MonoBehaviour {
 
-    public GameObject rod;
+    public GameObject fishTemplate;
+
     private Rigidbody rb;
+    private bool hasFish = false;
 
 	// Use this for initialization
 	void Start () {
@@ -24,19 +26,19 @@ public class BaitPhysicsController : MonoBehaviour {
 	}
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Fish"))
+        if (other.gameObject.CompareTag("FishArea") && hasFish == false)
         {
-            other.gameObject.transform.SetParent(this.transform);
-            other.gameObject.transform.localPosition = new Vector3(0f, 0f, 0f);
-            other.gameObject.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
+            GameObject fish = Instantiate(fishTemplate);
+            fish.transform.SetParent(this.transform);
+            hasFish = true;
         }
-        if (other.gameObject.CompareTag("Bucket"))
+        if (other.gameObject.CompareTag("Bucket") && hasFish == true)
         {
             if (this.transform.childCount > 0)
             {
                 for (var i = 0; i < this.transform.childCount; i++)
                 {
-                    this.transform.GetChild(i).transform.SetParent(other.transform);
+                    Destroy(this.transform.GetChild(i).gameObject);
                 }
             }
         }
