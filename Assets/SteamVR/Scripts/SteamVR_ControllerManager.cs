@@ -15,12 +15,10 @@ public class SteamVR_ControllerManager : MonoBehaviour
     public GameObject rod;
     public GameObject hook;
     public GameObject rodTrigger;
-    public GameObject reelCentre;
     public float reelSpeed = 0.04f;
     public float minReelLength = 0.7f;
 
     private SpringJoint rodJoint;
-    private bool touchingReel = false;
 
     private Transform rodTransform;
     private Transform hookTransform;
@@ -265,8 +263,6 @@ public class SteamVR_ControllerManager : MonoBehaviour
         EVRButtonId.k_EButton_SteamVR_Trigger
     };
 
-    //3 is right 4 is left
-
     void Update()
     {
         for (var index = 0; index < connected.Length; index++)
@@ -277,8 +273,6 @@ public class SteamVR_ControllerManager : MonoBehaviour
                 {
                     if (SteamVR_Controller.Input(index).GetPressDown(buttonId))
                     {
-                        Debug.Log(buttonId + " press down");
-                        Debug.Log(index);
                         if (buttonId == buttonIds[1] && index == rightIndex)
                         {
                             if (rodJoint.maxDistance == 300)
@@ -295,12 +289,6 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     }
                     if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
                     {
-                        Debug.Log(buttonId + " press up");
-                        if (buttonId == EVRButtonId.k_EButton_SteamVR_Trigger && index == leftIndex)
-                        {
-                            Debug.Log("Stop");
-                            moveReel(reelCentre.GetComponent<HingeJoint>().angle);
-                        }
                     }
                     //For holds
                     if (SteamVR_Controller.Input(index).GetPress(buttonId))
@@ -310,45 +298,13 @@ public class SteamVR_ControllerManager : MonoBehaviour
                             rodJoint.maxDistance -= reelSpeed;
                             SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(1000);
                         }
-                        if (buttonId == buttonIds[3] && index == leftIndex && touchingReel == true)
-                        {
-                            //TODO Fix this mess
-                            Debug.Log(Vector3.Angle(reelCentre.transform.position, left.transform.position));
-                            moveReel(Vector3.Angle(reelCentre.transform.position, left.transform.position));
-                        }
                     }
                 }
 
                 foreach (var buttonId in axisIds)
                 {
-                    if (SteamVR_Controller.Input(index).GetTouchDown(buttonId))
-                        //Debug.Log(buttonId + " touch down");
-                        if (SteamVR_Controller.Input(index).GetTouchUp(buttonId))
-                            //Debug.Log(buttonId + " touch up");
-                            if (SteamVR_Controller.Input(index).GetTouch(buttonId))
-                            {
-                                //var axis = SteamVR_Controller.Input(index).GetAxis(buttonId);
-                                //Debug.Log("axis: " + axis);
-                            }
                 }
             }
         }
-    }
-
-    public void setReelTouching(bool touching)
-    {
-        touchingReel = touching;
-        if (touching == false)
-        {
-            //disableReel();
-        }
-    }
-
-    private void moveReel(float angle)
-    {
-        var reelHinge = reelCentre.GetComponent<HingeJoint>();
-        JointSpring reelSpring = reelHinge.spring;
-        reelSpring.targetPosition = angle;
-        reelHinge.spring = reelSpring;
     }
 }
