@@ -289,6 +289,18 @@ public class SteamVR_ControllerManager : MonoBehaviour
                                 rodJoint.maxDistance = 300f;
                             }
                         }
+                    }
+                    if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
+                    {
+                    }
+                    //For holds
+                    if (SteamVR_Controller.Input(index).GetPress(buttonId))
+                    {
+                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength)
+                        {
+                            rodJoint.maxDistance -= reelSpeed;
+                            SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(1000);
+                        }
                         if (buttonId == buttonIds[2] && index == rightIndex)
                         {
                             Vector2 axis = SteamVR_Controller.Input(index).GetAxis(axisIds[0]);
@@ -308,18 +320,6 @@ public class SteamVR_ControllerManager : MonoBehaviour
                             {
                                 boatMoveController.moveBoat(0, 1);
                             }
-                        }
-                    }
-                    if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
-                    {
-                    }
-                    //For holds
-                    if (SteamVR_Controller.Input(index).GetPress(buttonId))
-                    {
-                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength)
-                        {
-                            rodJoint.maxDistance -= reelSpeed;
-                            SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(1000);
                         }
                     }
                 }
