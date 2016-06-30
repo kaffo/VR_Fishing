@@ -32,6 +32,7 @@ public class BaitPhysicsController : MonoBehaviour {
             fish.transform.SetParent(this.transform);
             fish.transform.localPosition = Vector3.zero;
             fish.transform.localRotation = Quaternion.identity;
+            fish.transform.localScale = new Vector3(3, 12, 3);
             hasFish = true;
         }
         if (other.gameObject.CompareTag("Bucket") && hasFish == true)
@@ -41,6 +42,7 @@ public class BaitPhysicsController : MonoBehaviour {
                 for (var i = 0; i < this.transform.childCount; i++)
                 {
                     Destroy(this.transform.GetChild(i).gameObject);
+                    hasFish = false;
                 }
             }
         }
