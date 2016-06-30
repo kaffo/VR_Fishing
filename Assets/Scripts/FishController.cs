@@ -13,39 +13,22 @@ public class FishController : MonoBehaviour {
 
     public int maxFishAreas = 5;
 
+    private float fishAreaX;
+    private float fishAreaY;
+    private float fishAreaZ;
+
+    private float fishAreaSizeX;
+    private float fishAreaSizeY;
+    private float fishAreaSizeZ;
+
+    private Vector3 fishAreaPos;
+    private Vector3 fishAreaScale;
+
     // Use this for initialization
     void Start () {
-        float fishAreaX;
-        float fishAreaY;
-        float fishAreaZ;
-
-        float fishAreaSizeX;
-        float fishAreaSizeY;
-        float fishAreaSizeZ;
-
-        Vector3 fishAreaPos;
-        Vector3 fishAreaScale;
-
         for (var i = 0; i < maxFishAreas; i++)
         {
-
-            fishAreaX = Random.Range(-maxFishAreaX, maxFishAreaX);
-            fishAreaY = Random.Range(-maxFishAreaY, 0);
-            fishAreaZ = Random.Range(-maxFishAreaZ, maxFishAreaZ);
-
-            fishAreaPos = new Vector3(fishAreaX, fishAreaY, fishAreaZ);
-
-            GameObject fishArea = (GameObject) Instantiate(templateFishArea, fishAreaPos, Quaternion.identity);
-
-            fishArea.transform.SetParent(this.transform);
-
-            fishAreaSizeX = Random.Range(1, maxFishAreaSizeX);
-            fishAreaSizeY = Random.Range(1, maxFishAreaSizeY);
-            fishAreaSizeZ = Random.Range(1, maxFishAreaSizeZ);
-
-            fishAreaScale = new Vector3(fishAreaSizeX, fishAreaSizeY, fishAreaSizeZ);
-
-            fishArea.transform.localScale = fishAreaScale;
+            newFishArea();
         }
     }
 	
@@ -53,4 +36,30 @@ public class FishController : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public void newFishArea()
+    {
+        fishAreaX = Random.Range(-maxFishAreaX, maxFishAreaX);
+        fishAreaY = Random.Range(-maxFishAreaY, 0);
+        fishAreaZ = Random.Range(-maxFishAreaZ, maxFishAreaZ);
+
+        fishAreaPos = new Vector3(fishAreaX, fishAreaY, fishAreaZ);
+
+        GameObject fishArea = (GameObject)Instantiate(templateFishArea, fishAreaPos, Quaternion.identity);
+
+        fishArea.transform.SetParent(this.transform);
+
+        fishAreaSizeX = Random.Range(1, maxFishAreaSizeX);
+        fishAreaSizeY = Random.Range(1, maxFishAreaSizeY);
+        fishAreaSizeZ = Random.Range(1, maxFishAreaSizeZ);
+
+        fishAreaScale = new Vector3(fishAreaSizeX, fishAreaSizeY, fishAreaSizeZ);
+
+        fishArea.transform.localScale = fishAreaScale;
+
+        Vector3 fishAreaDest = new Vector3(Random.Range(-maxFishAreaX, maxFishAreaX), Random.Range(-maxFishAreaY, 0), Random.Range(-maxFishAreaZ, maxFishAreaZ));
+
+        FishAreaMoveController fishAreaScript = fishArea.GetComponent<FishAreaMoveController>();
+        fishAreaScript.destination = fishAreaDest;
+    }
 }
