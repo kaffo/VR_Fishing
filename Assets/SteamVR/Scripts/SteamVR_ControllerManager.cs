@@ -304,21 +304,22 @@ public class SteamVR_ControllerManager : MonoBehaviour
                         if (buttonId == buttonIds[2] && index == rightIndex)
                         {
                             Vector2 axis = SteamVR_Controller.Input(index).GetAxis(axisIds[0]);
+                            float boatSpeed = boatMoveController.speedMod;
                             if (axis.x < -0.5 && axis.y > -0.5 && axis.y < 0.5)
                             {
-                                boatMoveController.moveBoat(-1, 0);
+                                boatMoveController.moveBoat(-boatSpeed, 0);
                             }
                             else if (axis.x > 0.5 && axis.y > -0.5 && axis.y < 0.5)
                             {
-                                boatMoveController.moveBoat(1, 0);
+                                boatMoveController.moveBoat(boatSpeed, 0);
                             }
                             else if (axis.y < -0.5 && axis.x > -0.5 && axis.x < 0.5)
                             {
-                                boatMoveController.moveBoat(0, -1);
+                                boatMoveController.moveBoat(0, -boatSpeed);
                             }
                             else if (axis.y > 0.5 && axis.x > -0.5 && axis.x < 0.5)
                             {
-                                boatMoveController.moveBoat(0, 1);
+                                boatMoveController.moveBoat(0, boatSpeed);
                             }
                         }
                     }
