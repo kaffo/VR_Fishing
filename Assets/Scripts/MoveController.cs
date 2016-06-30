@@ -21,12 +21,7 @@ public class MoveController : MonoBehaviour {
 
         if (moveHorizontal != 0 || moveVertical != 0)
         {
-            Vector3 boatPos = this.transform.position;
-            Vector3 newPos = new Vector3(boatPos.x + moveHorizontal, 0f, boatPos.z + moveVertical);
-            if (newPos.x < maxX && newPos.x > -maxX && newPos.z < maxY && newPos.z > -maxY)
-            {
-                this.transform.position = newPos;
-            }
+            moveBoat(moveHorizontal, moveVertical);
         }
         if (mouseScroll != 0)
         {
@@ -36,6 +31,16 @@ public class MoveController : MonoBehaviour {
             {
                 cam.transform.position = newCamPos;
             }
+        }
+    }
+
+    public void moveBoat(float h, float v)
+    {
+        Vector3 boatPos = this.transform.position;
+        Vector3 newPos = new Vector3(boatPos.x + h, 0f, boatPos.z + v);
+        if (newPos.x < maxX && newPos.x > -maxX && newPos.z < maxY && newPos.z > -maxY)
+        {
+            this.transform.position = newPos;
         }
     }
 }

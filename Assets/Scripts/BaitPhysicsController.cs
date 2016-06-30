@@ -30,6 +30,8 @@ public class BaitPhysicsController : MonoBehaviour {
         {
             GameObject fish = Instantiate(fishTemplate);
             fish.transform.SetParent(this.transform);
+            fish.transform.localPosition = Vector3.zero;
+            fish.transform.localRotation = Quaternion.identity;
             hasFish = true;
         }
         if (other.gameObject.CompareTag("Bucket") && hasFish == true)

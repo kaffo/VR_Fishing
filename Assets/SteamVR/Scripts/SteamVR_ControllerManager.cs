@@ -286,6 +286,11 @@ public class SteamVR_ControllerManager : MonoBehaviour
                                 rodJoint.maxDistance = 300f;
                             }
                         }
+                        if (buttonId == buttonIds[2] && index == rightIndex)
+                        {
+                            var axis = SteamVR_Controller.Input(index).GetAxis(0);
+                            Debug.Log("Axis: " + axis);
+                        }
                     }
                     if (SteamVR_Controller.Input(index).GetPressUp(buttonId))
                     {
