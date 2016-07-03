@@ -20,6 +20,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
     public float minReelLength = 0.7f;
 
     private SpringJoint rodJoint;
+    private bool lineFree = false;
 
     private Transform rodTransform;
     private Transform hookTransform;
@@ -278,14 +279,16 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     {
                         if (buttonId == buttonIds[1] && index == rightIndex)
                         {
-                            if (rodJoint.maxDistance == 300)
+                            if (lineFree == true)
                             {
                                 rodTrigger.SetActive(false);
+                                lineFree = false;
                                 rodJoint.maxDistance = Vector3.Distance(rodTransform.position, hookTransform.position);
                             }
                             else
                             {
                                 rodTrigger.SetActive(true);
+                                lineFree = true;
                                 rodJoint.maxDistance = 300f;
                             }
                         }
@@ -296,7 +299,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     //For holds
                     if (SteamVR_Controller.Input(index).GetPress(buttonId))
                     {
-                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength)
+                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength && lineFree == false)
                         {
                             rodJoint.maxDistance -= reelSpeed;
                             SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(1000);
@@ -305,22 +308,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                         {
                             Vector2 axis = SteamVR_Controller.Input(index).GetAxis(axisIds[0]);
                             float boatSpeed = boatMoveController.speedMod;
-                            if (axis.x < -0.5 && axis.y > -0.5 && axis.y < 0.5)
-                            {
-                                boatMoveController.moveBoat(-boatSpeed, 0);
-                            }
-                            else if (axis.x > 0.5 && axis.y > -0.5 && axis.y < 0.5)
-                            {
-                                boatMoveController.moveBoat(boatSpeed, 0);
-                            }
-                            else if (axis.y < -0.5 && axis.x > -0.5 && axis.x < 0.5)
-                            {
-                                boatMoveController.moveBoat(0, -boatSpeed);
-                            }
-                            else if (axis.y > 0.5 && axis.x > -0.5 && axis.x < 0.5)
-                            {
-                                boatMoveController.moveBoat(0, boatSpeed);
-                            }
+                            boatMoveController.moveBoat(axis.x * boatSpeed, axis.y * boatSpeed);
                         }
                     }
                 }
