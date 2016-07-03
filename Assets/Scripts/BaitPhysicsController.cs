@@ -28,6 +28,7 @@ public class BaitPhysicsController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("FishArea") && hasFish == false)
         {
+            //TODO Refactor all this
             GameObject fish = Instantiate(fishTemplate);
             fish.transform.SetParent(this.transform);
             fish.transform.localPosition = Vector3.zero;
