@@ -4,18 +4,21 @@ using System.Collections;
 public class BaitPhysicsController : MonoBehaviour {
 
     public GameObject fishTemplate;
+    public GameObject controllerManager;
 
     private Rigidbody rb;
+    private SteamVR_ControllerManager conManScript;
     private bool hasFish = false;
 
 	// Use this for initialization
 	void Start () {
-        rb = this.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        conManScript = controllerManager.GetComponent<SteamVR_ControllerManager>();
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (this.transform.position.y < 0)
+        if (transform.position.y < 0)
         {
             rb.drag = 40;
         }
@@ -30,19 +33,19 @@ public class BaitPhysicsController : MonoBehaviour {
         {
             //TODO Refactor all this
             GameObject fish = Instantiate(fishTemplate);
-            fish.transform.SetParent(this.transform);
-            fish.transform.localPosition = Vector3.zero;
-            fish.transform.localRotation = Quaternion.identity;
-            fish.transform.localScale = new Vector3(3, 12, 3);
+            fish.transform.eulerAngles = new Vector3(90, 0, 0);
+            fish.transform.position = transform.position - new Vector3(0, 0, -0.3f);
+            fish.GetComponent<FixedJoint>().connectedBody = rb;
+            conManScript.Rumble(1, 2000);
             hasFish = true;
         }
         if (other.gameObject.CompareTag("Bucket") && hasFish == true)
         {
-            if (this.transform.childCount > 0)
+            if (transform.childCount > 0)
             {
-                for (var i = 0; i < this.transform.childCount; i++)
+                for (var i = 0; i < transform.childCount; i++)
                 {
-                    Destroy(this.transform.GetChild(i).gameObject);
+                    Destroy(transform.GetChild(i).gameObject);
                     hasFish = false;
                 }
             }

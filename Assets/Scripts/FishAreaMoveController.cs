@@ -18,7 +18,7 @@ public class FishAreaMoveController : MonoBehaviour {
         if (transform.position == destination)
         {
             transform.parent.GetComponent<FishController>().newFishArea();
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

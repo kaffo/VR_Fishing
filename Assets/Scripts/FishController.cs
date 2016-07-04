@@ -47,7 +47,7 @@ public class FishController : MonoBehaviour {
 
         GameObject fishArea = (GameObject)Instantiate(templateFishArea, fishAreaPos, Quaternion.identity);
 
-        fishArea.transform.SetParent(this.transform);
+        fishArea.transform.SetParent(transform);
 
         fishAreaSizeX = Random.Range(1, maxFishAreaSizeX);
         fishAreaSizeY = Random.Range(1, maxFishAreaSizeY);

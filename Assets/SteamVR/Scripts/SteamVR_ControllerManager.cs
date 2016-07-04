@@ -319,4 +319,15 @@ public class SteamVR_ControllerManager : MonoBehaviour
             }
         }
     }
+    public void Rumble(int leftOrRight, ushort duration)
+    {
+        if (leftOrRight == 0)
+        {
+            SteamVR_Controller.Input((int)leftIndex).TriggerHapticPulse(duration);
+        }
+        else if (leftOrRight == 1)
+        {
+            SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(duration);
+        }
+    }
 }
