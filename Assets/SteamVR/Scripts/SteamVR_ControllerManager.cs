@@ -312,10 +312,6 @@ public class SteamVR_ControllerManager : MonoBehaviour
                         }
                     }
                 }
-
-                foreach (var buttonId in axisIds)
-                {
-                }
             }
         }
     }

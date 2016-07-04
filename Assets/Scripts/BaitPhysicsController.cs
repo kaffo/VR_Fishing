@@ -8,12 +8,13 @@ public class BaitPhysicsController : MonoBehaviour {
 
     private Rigidbody rb;
     private SteamVR_ControllerManager conManScript;
-    private bool hasFish = false;
+    private GameObject fish;
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
         conManScript = controllerManager.GetComponent<SteamVR_ControllerManager>();
+        fish = null;
 	}
 	
 	// Update is called once per frame
@@ -29,26 +30,18 @@ public class BaitPhysicsController : MonoBehaviour {
 	}
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("FishArea") && hasFish == false)
+        if (other.gameObject.CompareTag("FishArea") && fish == null)
         {
-            //TODO Refactor all this
-            GameObject fish = Instantiate(fishTemplate);
+            fish = Instantiate(fishTemplate);
             fish.transform.eulerAngles = new Vector3(90, 0, 0);
-            fish.transform.position = transform.position - new Vector3(0, 0, -0.3f);
-            fish.GetComponent<FixedJoint>().connectedBody = rb;
-            conManScript.Rumble(1, 2000);
-            hasFish = true;
+            fish.transform.position = transform.position - new Vector3(0, 0, -0.2f);
+            fish.GetComponent<FixedJoint>().connectedBody = rb;            
+            conManScript.Rumble(1, 500);
         }
-        if (other.gameObject.CompareTag("Bucket") && hasFish == true)
+        if (other.gameObject.CompareTag("Bucket") && fish != null)
         {
-            if (transform.childCount > 0)
-            {
-                for (var i = 0; i < transform.childCount; i++)
-                {
-                    Destroy(transform.GetChild(i).gameObject);
-                    hasFish = false;
-                }
-            }
+            Destroy(fish);
+            fish = null;
         }
     }
 }
