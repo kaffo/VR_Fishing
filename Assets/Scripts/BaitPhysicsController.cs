@@ -29,16 +29,22 @@ public class BaitPhysicsController : MonoBehaviour {
         {
             rb.drag = 40;
             rodToHook = Vector3.Distance(rod.transform.position, transform.position);
-            streach = rodToHook - (rodJoint.maxDistance + 1.0f);
+            streach = rodToHook - (rodJoint.maxDistance + 0.07f);
             if (fish != null && streach > 0)
             {
                 //Debug.Log("Mag: " + Vector3.Distance(rod.transform.position, transform.position) + " Dist: " + rodJoint.maxDistance);
-                conManScript.Rumble(1, (ushort)(500 * streach));
+                conManScript.Rumble(1, (ushort)(1000 * streach));
+                conManScript.SetLineSlack(false);
+            }
+            else
+            {
+                conManScript.SetLineSlack(true);
             }
         }
         else
         {
             rb.drag = 1;
+            conManScript.SetLineSlack(true);
         }
 	}
     void OnTriggerEnter(Collider other)

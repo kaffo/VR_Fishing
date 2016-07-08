@@ -21,6 +21,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
 
     private SpringJoint rodJoint;
     private bool lineFree = false;
+    private bool lineSlack = true;
 
     private Transform rodTransform;
     private Transform hookTransform;
@@ -299,7 +300,7 @@ public class SteamVR_ControllerManager : MonoBehaviour
                     //For holds
                     if (SteamVR_Controller.Input(index).GetPress(buttonId))
                     {
-                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength && lineFree == false)
+                        if (buttonId == buttonIds[1] && index == leftIndex && rodJoint.maxDistance > minReelLength && lineFree == false && lineSlack == true)
                         {
                             rodJoint.maxDistance -= reelSpeed;
                             SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(1000);
@@ -325,5 +326,9 @@ public class SteamVR_ControllerManager : MonoBehaviour
         {
             SteamVR_Controller.Input((int)rightIndex).TriggerHapticPulse(duration);
         }
+    }
+    public void SetLineSlack(bool _lineSlack)
+    {
+        lineSlack = _lineSlack;
     }
 }

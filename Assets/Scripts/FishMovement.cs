@@ -33,7 +33,7 @@ public class FishMovement : MonoBehaviour {
         currentThrashTimer = 0;
         fishForce = Vector3.zero;
 
-        GetComponent<FixedJoint>().breakForce = 10f;
+        //GetComponent<FixedJoint>().breakForce = 100f;
 	}
 
 	// Update is called once per frame
