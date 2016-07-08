@@ -62,8 +62,8 @@ public class FishMovement : MonoBehaviour {
                 sideVector *= fishSides;
 
                 fishForce = upVector + awayFromPlayer + sideVector;
-                Debug.Log("Time: " + currentThrashTimer);
-                Debug.Log("Up: " + upVector + " Away: " + awayFromPlayer + " Sides: " + sideVector + " Final: " + fishForce);
+                //Debug.Log("Time: " + currentThrashTimer);
+                //Debug.Log("Up: " + upVector + " Away: " + awayFromPlayer + " Sides: " + sideVector + " Final: " + fishForce);
                 Debug.DrawLine(transform.position, transform.position + fishForce, Color.yellow, currentThrashTimer);
             }
         }
