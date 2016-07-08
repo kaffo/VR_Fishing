@@ -39,27 +39,36 @@ public class FishController : MonoBehaviour {
 
     public void newFishArea()
     {
-        fishAreaX = Random.Range(-maxFishAreaX, maxFishAreaX);
-        fishAreaY = Random.Range(-maxFishAreaY, 0);
-        fishAreaZ = Random.Range(-maxFishAreaZ, maxFishAreaZ);
+        while (true)
+        {
+            fishAreaX = Random.Range(-maxFishAreaX, maxFishAreaX);
+            fishAreaY = Random.Range(-maxFishAreaY, 0);
+            fishAreaZ = Random.Range(-maxFishAreaZ, maxFishAreaZ);
 
-        fishAreaPos = new Vector3(fishAreaX, fishAreaY, fishAreaZ);
+            fishAreaSizeX = Random.Range(1, maxFishAreaSizeX);
+            fishAreaSizeY = Random.Range(1, maxFishAreaSizeY);
+            fishAreaSizeZ = Random.Range(1, maxFishAreaSizeZ);
 
-        GameObject fishArea = (GameObject)Instantiate(templateFishArea, fishAreaPos, Quaternion.identity);
+            if (fishAreaY + fishAreaSizeY >= 0)
+            {
+                continue;
+            }
 
-        fishArea.transform.SetParent(transform);
+            fishAreaPos = new Vector3(fishAreaX, fishAreaY, fishAreaZ);
 
-        fishAreaSizeX = Random.Range(1, maxFishAreaSizeX);
-        fishAreaSizeY = Random.Range(1, maxFishAreaSizeY);
-        fishAreaSizeZ = Random.Range(1, maxFishAreaSizeZ);
+            GameObject fishArea = (GameObject)Instantiate(templateFishArea, fishAreaPos, Quaternion.identity);
 
-        fishAreaScale = new Vector3(fishAreaSizeX, fishAreaSizeY, fishAreaSizeZ);
+            fishArea.transform.SetParent(transform);
 
-        fishArea.transform.localScale = fishAreaScale;
+            fishAreaScale = new Vector3(fishAreaSizeX, fishAreaSizeY, fishAreaSizeZ);
 
-        Vector3 fishAreaDest = new Vector3(Random.Range(-maxFishAreaX, maxFishAreaX), Random.Range(-maxFishAreaY, 0), Random.Range(-maxFishAreaZ, maxFishAreaZ));
+            fishArea.transform.localScale = fishAreaScale;
 
-        FishAreaMoveController fishAreaScript = fishArea.GetComponent<FishAreaMoveController>();
-        fishAreaScript.destination = fishAreaDest;
+            Vector3 fishAreaDest = new Vector3(Random.Range(-maxFishAreaX, maxFishAreaX), Random.Range(-maxFishAreaY, 0), Random.Range(-maxFishAreaZ, maxFishAreaZ));
+
+            FishAreaMoveController fishAreaScript = fishArea.GetComponent<FishAreaMoveController>();
+            fishAreaScript.destination = fishAreaDest;
+            break;
+        }
     }
 }
