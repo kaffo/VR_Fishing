@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Valve.VR;
 
 public class BaitPhysicsController : MonoBehaviour {
 
@@ -9,7 +10,7 @@ public class BaitPhysicsController : MonoBehaviour {
 
     private Rigidbody rb;
     private SpringJoint rodJoint;
-    private SteamVR_ControllerManager conManScript;
+    private InputManager conManScript;
     private GameObject fish;
 
     private float rodToHook;
@@ -19,7 +20,7 @@ public class BaitPhysicsController : MonoBehaviour {
     void Start () {
         rb = GetComponent<Rigidbody>();
         rodJoint = rod.GetComponent<SpringJoint>();
-        conManScript = controllerManager.GetComponent<SteamVR_ControllerManager>();
+        conManScript = controllerManager.GetComponent<InputManager>();
         fish = null;
 	}
 	
@@ -33,7 +34,8 @@ public class BaitPhysicsController : MonoBehaviour {
             if (fish != null && streach > 0)
             {
                 //Debug.Log("Mag: " + Vector3.Distance(rod.transform.position, transform.position) + " Dist: " + rodJoint.maxDistance);
-                conManScript.Rumble(1, (ushort)(1000 * streach));
+                conManScript.Rumble(SteamVR_Input_Sources.LeftHand, (ushort)(1000 * streach));
+                conManScript.Rumble(SteamVR_Input_Sources.RightHand, (ushort)(1000 * streach));
                 conManScript.SetLineSlack(false);
             }
             else
@@ -57,7 +59,8 @@ public class BaitPhysicsController : MonoBehaviour {
             fish.GetComponent<FixedJoint>().connectedBody = rb;
             fish.GetComponent<FishMovement>().rod = rod;
             fish.GetComponent<FishMovement>().hook = gameObject;
-            conManScript.Rumble(1, 2000);
+            conManScript.Rumble(SteamVR_Input_Sources.LeftHand, 2000);
+            conManScript.Rumble(SteamVR_Input_Sources.RightHand, 2000);
         }
         if (other.gameObject.CompareTag("Bucket") && fish != null)
         {

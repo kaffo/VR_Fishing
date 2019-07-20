@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.vr_fishing.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "G:\\workspace\\VR_Fishing\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "VR_Fishing [Testing]"
+        }
+      }
+    }
+  ]
+}
